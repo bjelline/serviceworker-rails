@@ -47,8 +47,11 @@ module ServiceWorker
       env = env.merge("serviceworker.asset_name" => route_match.asset_name)
 
       status, headers, body = handler_for_route_match(route_match).call(env)
-
-      [status, headers.merge(@headers).merge(route_match.headers), body]
+      new_body = ""
+      body.each do |s|
+        new_body += s.to_s
+      end
+      [status, headers.merge(@headers).merge(route_match.headers), [new_body]]
     end
 
     def handler_for_route_match(route_match)
